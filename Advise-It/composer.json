@@ -1,0 +1,15 @@
+{
+  "name": "aperciv1/Advise-It",
+  "description": "F3  program for GRC",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Adam Percival",
+      "email": "imhank@me.com"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
