@@ -5,16 +5,22 @@ error_reporting(E_ALL);
 
 require_once('vendor/autoload.php');
 
+session_start();
+
 $f3 = Base::instance();
+$con = new Controller($f3);
+$dataLayer = new DataLayer();
 
 $f3->route('GET /', function(){
-   $view = new Template();
-   echo $view->render('views/home.html');
+    $GLOBALS['con']->home();
 });
 
 $f3->route('GET /plan', function(){
-    $view = new Template();
-    echo $view->render('views/plan.html');
+    $GLOBALS['con']->createPlan();
+});
+
+$f3->route('GET|POST /plan/@token', function($f3){
+    $GLOBALS['con']->getPlan($f3->get('PARAMS.token'));
 });
 
 $f3->run();

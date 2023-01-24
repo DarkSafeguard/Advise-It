@@ -15,38 +15,34 @@ class Plan
      * Order constructor.
      * $order = new Order();
      * $order = new Order("taco", "lunch", "salsa");
-     * @param $_food
-     * @param $_meal
-     * @param $_condiments
+     * @param string $fall
+     * @param string $winter
+     * @param string $spring
+     * @param string $summer
+     * @throws Exception
      */
-    public function __construct($fall = "", $winter = "", $spring = "", $summer = "")
+    public function __construct(string $fall = "", string $winter = "", string $spring = "", string $summer = "")
     {
-        $this->_token = generateToken();
+        $this->_token = strtoupper(bin2hex(random_bytes(3)));
         $this->_fall = $fall;
         $this->_winter = $winter;
         $this->_spring = $spring;
         $this->_summer = $summer;
-    }
-
-    /**
-     * Returns a possible 6 character token assigned to a plan
-     * @return string
-     */
-    public function generateToken(): string
-    {
-        $result_token = "";
-        $allowed_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-        for ($i = 0; $i < 6; $i++) {
-            $picked = rand(0, len($allowed_chars) - 1);
-            $result_token = $result_token . $allowed_chars[$picked];
-        }
-        return $result_token;
+        echo $this->_token;
     }
 
     public function getToken(): string
     {
         return $this->_token;
+    }
+
+    /**
+     * Set token
+     * @param string $token
+     */
+    public function setToken(string $token)
+    {
+        $this->_token = $token;
     }
 
     /**

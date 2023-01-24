@@ -1,7 +1,12 @@
 <?php
 
 //Require the database credentials
-require_once $_SERVER['DOCUMENT_ROOT'].'/../pdo-config.php';
+//require_once $_SERVER['DOCUMENT_ROOT'].'/../pdo-config.php';
+
+
+const DB_DSN = 'mysql:dbname=aperciv1_adviseit';
+const DB_USERNAME = 'aperciv1_adviseit';
+const DB_PASSWORD = 'ah*Gk^SSOCi]';
 
 /**
  * Class DataLayer accesses data needed for the Diner app
@@ -33,8 +38,13 @@ class DataLayer
     function savePlan($plan)
     {
         //1. Define the query
-        $sql = "INSERT INTO advise (token, fall, winter, spring, summer)
-        VALUES (:token, :fall, :winter, :spring, :summer)";
+        $sql = "UPDATE advise 
+                SET
+                fall = :fall,
+                winter = :winter,
+                spring = :spring,
+                summer = :summer
+                WHERE token = :token";
 
         //2. Prepare the statement
         $statement = $this->_dbh->prepare($sql);
@@ -54,11 +64,31 @@ class DataLayer
 
     }
 
-    //TODO: Add docblock
-    function getPlan()
+    function createPlan($plan)
     {
         //1. Define the query
-        $sql = "SELECT * FROM diner_order";
+        $sql = "INSERT INTO advise (token)
+        VALUES (:token)";
+
+        //2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //3. Bind the parameters
+        $statement->bindParam(':token', $plan->getToken());
+
+        //4. Execute the query
+        $statement->execute();
+
+        //5. Process the results (get the primary key)
+        return $this->_dbh->lastInsertId();
+
+    }
+
+    //TODO: Add docblock
+    function getPlan($token)
+    {
+        //1. Define the query
+        $sql = "SELECT * FROM advise WHERE token='$token'";
 
         //2. Prepare the statement
         $statement = $this->_dbh->prepare($sql);
@@ -69,7 +99,7 @@ class DataLayer
         $statement->execute();
 
         //5. Process the results (get the primary key)
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 
