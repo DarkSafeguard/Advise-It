@@ -46,7 +46,7 @@ class Controller
         }
         else
         {
-            $this->reRouteHome();
+            //$this->reRouteHome();
         }
     }
 
@@ -70,7 +70,7 @@ class Controller
         $this->_f3->set('summer', $summer);
         if($_SESSION['saved'])
         {
-            $this->_f3->set('saveMessage', 'Plan saved at: ' . 'plan update time');
+            $this->_f3->set('saveMessage', 'Plan saved at: ' . date("Y-m-d") . " " . date("H:i:s"));
             $_SESSION['saved'] = false;
         }
 

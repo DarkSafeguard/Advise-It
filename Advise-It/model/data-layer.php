@@ -43,7 +43,8 @@ class DataLayer
                 fall = :fall,
                 winter = :winter,
                 spring = :spring,
-                summer = :summer
+                summer = :summer,
+                save_date = :current_date
                 WHERE token = :token";
 
         //2. Prepare the statement
@@ -55,6 +56,8 @@ class DataLayer
         $statement->bindParam(':winter', $plan->getWinter());
         $statement->bindParam(':spring', $plan->getSpring());
         $statement->bindParam(':summer', $plan->getSummer());
+        $date = date("Y-m-d") . " " . date("H:i:s");
+        $statement->bindParam(':current_date', $date);
 
         //4. Execute the query
         $statement->execute();
@@ -67,14 +70,16 @@ class DataLayer
     function createPlan($plan)
     {
         //1. Define the query
-        $sql = "INSERT INTO advise (token)
-        VALUES (:token)";
+        $sql = "INSERT INTO advise (token, creation_date)
+        VALUES (:token, :current_date)";
 
         //2. Prepare the statement
         $statement = $this->_dbh->prepare($sql);
 
         //3. Bind the parameters
         $statement->bindParam(':token', $plan->getToken());
+        $str = date("Y-m-d") . " " . date("H:i:s");
+        $statement->bindParam(':current_date', $str);
 
         //4. Execute the query
         $statement->execute();
