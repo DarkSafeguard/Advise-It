@@ -40,6 +40,7 @@ class DataLayer
         //1. Define the query
         $sql = "UPDATE advise 
                 SET
+                advisor = :advisor,
                 fall = :fall,
                 winter = :winter,
                 spring = :spring,
@@ -51,6 +52,7 @@ class DataLayer
         $statement = $this->_dbh->prepare($sql);
 
         //3. Bind the parameters
+        $statement->bindParam(':advisor', $plan->getAdvisor());
         $statement->bindParam(':token', $plan->getToken());
         $statement->bindParam(':fall', $plan->getFall());
         $statement->bindParam(':winter', $plan->getWinter());
@@ -105,6 +107,24 @@ class DataLayer
 
         //5. Process the results (get the primary key)
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function getAllPlans()
+    {
+        //1. Define the query
+        $sql = "SELECT * FROM advise";
+
+        //2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        //3. Bind the parameters
+
+        //4. Execute the query
+        $statement->execute();
+
+        //5. Process the results (get the primary key)
+        $result = $statement->fetchAll();
         return $result;
     }
 

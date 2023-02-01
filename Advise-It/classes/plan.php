@@ -11,24 +11,45 @@ class Plan
     private $_spring;
     private $_summer;
 
+    private $_advisor;
+
+
     /**
      * Order constructor.
      * $order = new Order();
      * $order = new Order("taco", "lunch", "salsa");
+     * @param string $advisor
      * @param string $fall
      * @param string $winter
      * @param string $spring
      * @param string $summer
      * @throws Exception
      */
-    public function __construct(string $fall = "", string $winter = "", string $spring = "", string $summer = "")
+    public function __construct(string $advisor = "", string $fall = "", string $winter = "", string $spring = "", string $summer = "")
     {
         $this->_token = strtoupper(bin2hex(random_bytes(3)));
+        $this->_advisor = $advisor;
         $this->_fall = $fall;
         $this->_winter = $winter;
         $this->_spring = $spring;
         $this->_summer = $summer;
         echo $this->_token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdvisor(): string
+    {
+        return $this->_advisor;
+    }
+
+    /**
+     * @param string $advisor
+     */
+    public function setAdvisor(string $advisor)
+    {
+        $this->_advisor = $advisor;
     }
 
     public function getToken(): string

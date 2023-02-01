@@ -23,4 +23,12 @@ $f3->route('GET|POST /plan/@token', function($f3){
     $GLOBALS['con']->getPlan($f3->get('PARAMS.token'));
 });
 
+$f3->route('GET|POST /login', function(){
+    $GLOBALS['con']->login();
+});
+
+$f3->route('GET /admin', function(){
+    $GLOBALS['con']->admin();
+});
+
 $f3->run();

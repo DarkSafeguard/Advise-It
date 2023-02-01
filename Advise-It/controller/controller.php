@@ -14,6 +14,40 @@ class Controller
         echo $view->render('views/home.html');
     }
 
+    function login()
+    {
+        $view = new Template();
+        echo $view->render('views/login.html');
+
+        $username = $_POST['user'];
+        $password = $_POST['password'];
+
+        if ($username == "admin" && $password == "admin")
+        {
+            $_SESSION['loggedIn'] = true;
+            $this->_f3->reroute('/admin');
+        }
+        else{
+            $_SESSION['loggedIn'] = false;
+        }
+    }
+
+    function admin()
+    {
+        if($_SESSION['loggedIn'])
+        {
+            $allPlans = $GLOBALS['dataLayer']->getAllPlans();
+            $this->_f3->set('plans', $allPlans);
+
+            $view = new Template();
+            echo $view->render('views/admin.html');
+        }
+        else{
+            $this->_f3->reroute('/login');
+        }
+
+    }
+
     function createPlan()
     {
         $_SESSION['plan'] = new Plan();
@@ -57,13 +91,15 @@ class Controller
         $this->setSessionPlan($retrievedPlan);
 
         $sessionToken = $_SESSION['plan']->getToken();
+        $advisor = $_SESSION['plan']->getAdvisor();
         $fall = $_SESSION['plan']->getFall();
         $winter = $_SESSION['plan']->getWinter();
         $spring = $_SESSION['plan']->getSpring();
         $summer = $_SESSION['plan']->getSummer();
 
-        echo "<br>" . "Token: " . $sessionToken . "<br>" . " Fall Class: " . $fall . "<br>" . " Winter Class: " . $winter . "<br>" . " Spring Class: " . $spring . "<br>" . " Summer Class: " . $summer;
+        echo "<br>" . "Token: " . $sessionToken . "<br>" . "Advisor: " . $advisor . "<br>" . " Fall Class: " . $fall . "<br>" . " Winter Class: " . $winter . "<br>" . " Spring Class: " . $spring . "<br>" . " Summer Class: " . $summer;
 
+        $this->_f3->set('advisor', $advisor);
         $this->_f3->set('fall', $fall);
         $this->_f3->set('winter', $winter);
         $this->_f3->set('spring', $spring);
@@ -81,6 +117,15 @@ class Controller
     function setSessionPlan($retrievedPlan)
     {
         $_SESSION['plan']->setToken($retrievedPlan["token"]);
+
+        if($retrievedPlan["advisor"] != null)
+        {
+            $_SESSION['plan']->setAdvisor($retrievedPlan["advisor"]);
+        }
+        else
+        {
+            $_SESSION['plan']->setAdvisor("");
+        }
 
         if($retrievedPlan["fall"] != null)
         {
@@ -121,12 +166,14 @@ class Controller
 
     function savePlan()
     {
+            $advisor = $_POST['advisor'];
             $fall = $_POST['fall'];
             $winter = $_POST['winter'];
             $spring = $_POST['spring'];
             $summer = $_POST['summer'];
 
             //Add the data to the session variable
+            $_SESSION['plan']->setAdvisor($advisor);
             $_SESSION['plan']->setFall($fall);
             $_SESSION['plan']->setWinter($winter);
             $_SESSION['plan']->setSpring($spring);
