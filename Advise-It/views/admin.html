@@ -6,17 +6,20 @@
         <label class="col-sm-2 control-label">All Plans</label>
         <div class="col-sm-4">
             <table>
+                <tr>
+                    <td>ID</td>
+                    <td>Token</td>
+                    <td>Advisor</td>
+                    <td>Date Created</td>
+                    <td>Last Saved</td>
+                </tr>
                 <repeat group="{{ @plans }}" value="{{ @plan }}">
                     <tr>
                         <td>{{ @plan['id'] }}</td>
                         <td><a href="plan/{{ @plan['token'] }}">{{ @plan['token'] }}</a></td>
-                        <td>{{ @plan['fall'] }}</td>
-                        <td>{{ @plan['winter'] }}</td>
-                        <td>{{ @plan['spring'] }}</td>
-                        <td>{{ @plan['summer'] }}</td>
                         <td>{{ @plan['advisor'] }}</td>
                         <td>{{ @plan['creation_date'] }}</td>
-                        <td>{{ @plan['saved_date'] }}</td>
+                        <td>{{ @plan['save_date'] }}</td>
                     </tr>
                 </repeat>
             </table>
